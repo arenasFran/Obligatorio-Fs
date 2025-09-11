@@ -15,7 +15,7 @@ export const login = (req,res) =>{
         return res.status(401).json({error: 'Usuario y/o contraseña incorrectos.'});
     }
     const token = jwt.sign({username: username}, process.env.JWT_SECRET, {expiresIn: '1d'});
-    res.status(200).json({message: 'Usuario ingresado con éxito'}, token);
+    res.status(200).json({message: 'Usuario ingresado con éxito',token});
 }
 
 
@@ -30,6 +30,6 @@ export const register = (req,res) =>{
     const hash = bcrypt.hashSync(password, 10);
     usuarios.push({ username, password: hash, email });
     const token = jwt.sign({username: username}, process.env.JWT_SECRET, {expiresIn :'1d'});
-    res.status(201).json({message: 'Usuario registrado con éxito'},token)
+    res.status(201).json({message: 'Usuario registrado con éxito',token})
 }
 
