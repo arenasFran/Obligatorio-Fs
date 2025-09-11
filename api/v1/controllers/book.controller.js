@@ -1,4 +1,4 @@
-import books from "../models/book.model.js";
+import books, { fetchBooksFromGoogle } from "../models/book.model.js";
 
 export const createBook = (req, res) => {
   const { ownerId, title, content, categoryId } = req.body;
@@ -15,6 +15,12 @@ export const createBook = (req, res) => {
   res.status(201).json(newBook);
 };
 
-export const listBooks = (req, res) => {
-  res.json(books);
+export const listBooks = async (req, res) => {
+  try {
+    const query = req.query.q || "book";
+    const books = await fetchBooksFromGoogle(query);
+    res.json(books);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener libros de Google Books" });
+  }
 };
