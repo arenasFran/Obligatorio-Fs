@@ -6,7 +6,7 @@ import User from '../ModelsDB/user.model.js';
 
 export const login = async (req,res) =>{
     const {password, username} = req.body;
-   
+    const user = await User.findOne({username}).populate('plan')
    
     if(!user){
         return res.status(401).json({error: 'Usuario y/o contraseña incorrectos.'});
@@ -16,8 +16,8 @@ export const login = async (req,res) =>{
     if(!valida){
         return res.status(401).json({error: 'Usuario y/o contraseña incorrectos.'});
     }
-    const token = jwt.sign({username: username}, process.env.JWT_SECRET, {expiresIn: '1d'});
-    res.status(200).json({message: 'Usuario ingresado con éxito',token});
+    const token = jwt.sign({username: username, id:user._id}, process.env.JWT_SECRET, {expiresIn: '1d'});
+    res.status(200).json({message: 'Usuario ingresado con éxito',token, plan:user.plan});
 }
 
 
