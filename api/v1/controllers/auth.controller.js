@@ -26,12 +26,18 @@ export const register = async (req, res) => {
     const { username, password, email } = req.body;
     
     const existingUser = await User.findOne({username})
+    const existingEmail = await User.findOne({email});
 
     if(existingUser)
     {
-         return res.status(409).json({ error: 'Nombre de usuario existente.' });
+      return res.status(409).json({ error: 'Nombre de usuario existente.' });
     }
 
+    if(existingEmail)
+    {
+      return res.status(409).json({error: 'Email en uso'})
+    }
+    
     const defaultPlan = await Plan.findOne({ name: "plus" });
     const hash = bcrypt.hashSync(password, 10);
     
@@ -49,7 +55,6 @@ export const register = async (req, res) => {
 
     
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Error al registrar usuario." });
   }
 };

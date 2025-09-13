@@ -12,7 +12,7 @@ const seedPlans = async () => {
     }
   } catch (error) {
     console.error("Error al inicializar planes:", error);
-  }
+  }   
 };
 
 export default seedPlans;
