@@ -1,33 +1,36 @@
-import User from "../ModelsDB/user.model.js"
+import User from "../ModelsDB/user.model.js";
 import Plan from "../ModelsDB/plan.model.js";
+import { ServiceError } from "../utils/ServiceError.js";
 
-export const saveUserService= async (newUser)=>{
-
-    const user = new User(newUser) 
-    await user.save();
-    return user;
-}
-
+export const saveUserService = async (newUser) => {
+  const user = new User(newUser);
+  await user.save();
+  return user;
+};
 
 export const changeUserPlanService = async (userId, plan) => {
   if (!["plus", "premium"].includes(plan)) {
-    throw new Error("Solo se puede elegir plus o premium");
+    throw new ServiceError("Solo se puede elegir plus o premium",400);
   }
 
   const planExists = await Plan.findOne({ name: plan });
   if (!planExists) {
-    throw new Error("El plan no existe");
+    throw new ServiceError("El plan no existe",404);
+  }
+
+  const user = await User.findById(userId).populate("plan", "name");
+  if (!user) {
+    throw new ServiceError("Usuario no encontrado", 404);
+  }
+  if (user.plan && user.plan.name === plan) {
+    throw new ServiceError("No se puede cambiar el plan por un mismo plan",409);
   }
 
   const updatedUser = await User.findByIdAndUpdate(
     userId,
-    { plan },
+    { plan: planExists._id },
     { new: true }
-  ).select("-password");
-
-  if (!updatedUser) {
-    throw new Error("Usuario no encontrado");
-  }
+  ).select("-password").populate("plan", "name price maxReviews");
 
   return updatedUser;
 };

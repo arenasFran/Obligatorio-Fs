@@ -2,6 +2,6 @@ import express from 'express'
 import { updateUser } from '../controllers/user.controller.js'
 const router = express.Router({mergeParams: true})
 
-router.patch("/user", updateUser)
+router.patch("/", updateUser)
 
 export default router

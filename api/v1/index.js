@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
 
 router.use("/auth", authRoutes);
 router.use(authenticate);
-router.use("/user", )
+router.use("/user", userRoutes)
 
 
 
