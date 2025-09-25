@@ -1,4 +1,4 @@
-import Plan from "./ModelsDB/plan.model.js";
+import Plan from "./models/plan.model.js";
 
 const seedPlans = async () => {
   try {

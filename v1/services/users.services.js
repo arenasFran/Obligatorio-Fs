@@ -1,5 +1,5 @@
-import User from "../ModelsDB/user.model.js";
-import Plan from "../ModelsDB/plan.model.js";
+import User from "../models/user.model.js";
+import Plan from "../models/plan.model.js";
 import { ServiceError } from "../utils/ServiceError.js";
 
 export const saveUserService = async (newUser) => {

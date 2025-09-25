@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { saveUserService } from '../services/users.services.js';
-import Plan from '../ModelsDB/plan.model.js';
-import User from '../ModelsDB/user.model.js';
+import Plan from '../models/plan.model.js';
+import User from '../models/user.model.js';
 
 export const login = async (req,res) =>{
     const {password, username} = req.body;
