@@ -1,7 +1,8 @@
 import express from "express";
-import authRoutes from "./routes/auth.routes.js";
 import { authenticate } from "./middlewares/auth.middleware.js";
-import userRoutes from "./routes/user.routes.js"
+import authRoutes from "./routes/auth.routes.js";
+import bookRoutes from "./routes/book.routes.js";
+import userRoutes from "./routes/user.routes.js";
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -10,8 +11,7 @@ router.get("/", (req, res) => {
 
 router.use("/auth", authRoutes);
 router.use(authenticate);
-router.use("/user", userRoutes)
-
-
+router.use("/user", userRoutes);
+router.use("/books", bookRoutes);
 
 export default router;
