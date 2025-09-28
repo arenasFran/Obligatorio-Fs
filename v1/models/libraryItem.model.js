@@ -22,7 +22,12 @@ const libraryItemSchema = new Schema({
   },
   qualification: { type: Number, min: 1, max: 5 },
   progreso: { type: Number, default: 0 },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  collectionId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Collection",
+    required: true,
+  },
 });
 
 export default mongoose.model("LibraryItem", libraryItemSchema);
