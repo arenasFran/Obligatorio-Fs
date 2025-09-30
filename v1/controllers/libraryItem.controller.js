@@ -1,14 +1,9 @@
-import { createLibraryItem } from "../services/libraryItem.services.js";
+import { createLibraryItem, deleteLibraryItemService } from "../services/libraryItem.services.js";
 
-/**
- * Controlador para crear un nuevo libraryItem para el usuario logueado.
- * @param {Request} req
- * @param {Response} res
- * @param {Function} next
- */
+
 export async function createLibraryItemController(req, res, next) {
   try {
-    const userId = req.user._id; // Asume que el middleware de autenticación agrega el usuario a req
+    const userId = req.user._id;
     const itemData = req.body;
     const newItem = await createLibraryItem(itemData, userId);
     res.status(201).json(newItem);
@@ -16,3 +11,15 @@ export async function createLibraryItemController(req, res, next) {
     next(error);
   }
 }
+
+
+export const deleteLibraryItem = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const { id } = req.params;
+    await deleteLibraryItemService(id, userId);
+     res.status(204).json({message: 'Libro eliminado correctamente.'});
+  } catch (error) {
+    next(error);
+  }
+};
