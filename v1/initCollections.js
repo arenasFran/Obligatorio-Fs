@@ -11,10 +11,10 @@ const seedCollectionsForUsers = async () => {
   try {
     const users = await User.find();
     for (const user of users) {
-      const count = await Collection.countDocuments({ userId: user._id });
+      const count = await Collection.countDocuments({ user: user._id });
       if (count === 0) {
         for (const col of defaultCollections) {
-          await Collection.create({ ...col, userId: user._id });
+          await Collection.create({ ...col, user: user._id });
         }
         console.log(`Colecciones creadas para usuario ${user._id}`);
       } else {

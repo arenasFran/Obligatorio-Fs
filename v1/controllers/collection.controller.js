@@ -29,7 +29,7 @@ export async function getUserCollectionsController(req, res, next) {
     const userId = req.user._id;
 
     const collections = await Collection.find({
-      userId: new mongoose.Types.ObjectId(userId),
+      user: new mongoose.Types.ObjectId(userId),
     });
 
     res.json(collections);
