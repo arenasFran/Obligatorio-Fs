@@ -41,3 +41,31 @@ export async function createLibraryItem(itemData, userId) {
     );
   }
 }
+
+/**
+ * Obtiene todos los library items de una colección
+ * @param {string} collectionId - ID de la colección
+ * @returns {Promise<Array>} Lista de library items
+ */
+export async function getLibraryItemsByCollection(collectionId) {
+  return await LibraryItem.find({ collectionId });
+}
+
+/**
+ * Elimina un libraryItem por su ID
+ * @param {string} itemId - ID del libraryItem
+ * @param {string} userId - ID del usuario autenticado
+ * @returns {Promise<Object|null>} El item eliminado o null si no existe
+ */
+export async function deleteLibraryItem(itemId, userId) {
+  return await LibraryItem.findOneAndDelete({ _id: itemId, userId });
+}
+
+/**
+ * Obtiene todos los libraryItems de un usuario
+ * @param {string} userId - ID del usuario autenticado
+ * @returns {Promise<Array>}
+ */
+export async function getLibraryItemsByUser(userId) {
+  return await LibraryItem.find({ userId });
+}

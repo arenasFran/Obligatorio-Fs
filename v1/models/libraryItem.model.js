@@ -20,7 +20,6 @@ const libraryItemSchema = new Schema({
     enum: Object.values(Estado),
     default: Estado.NONE,
   },
-  qualification: { type: Number, min: 1, max: 5 },
   progreso: { type: Number, default: 0 },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   collectionId: {
