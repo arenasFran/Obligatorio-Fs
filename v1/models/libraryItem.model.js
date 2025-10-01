@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 const Estado = {
-  NONE: "NINGUNO",
+  NONE: "NONE",
   LEYENDO: "LEYENDO",
   TERMINADO: "TERMINADO",
 };
