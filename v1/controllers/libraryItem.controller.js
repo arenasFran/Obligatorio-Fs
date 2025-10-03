@@ -1,9 +1,25 @@
 import {
   createLibraryItem,
   deleteLibraryItem,
+  getLibraryItemById,
   getLibraryItemsByCollection,
   getLibraryItemsByUser,
 } from "../services/libraryItem.services.js";
+/**
+ * Controlador para obtener los detalles de un libraryItem específico
+ */
+export async function getLibraryItemByIdController(req, res, next) {
+  try {
+    const { itemId } = req.params;
+    const item = await getLibraryItemById(itemId);
+    if (!item) {
+      return res.status(404).json({ error: "LibraryItem no encontrado" });
+    }
+    res.json(item);
+  } catch (error) {
+    next(error);
+  }
+}
 
 /**
  * Controlador para crear un nuevo libraryItem para el usuario logueado.

@@ -1,5 +1,13 @@
 import LibraryItem from "../models/libraryItem.model.js";
 import { ServiceError } from "../utils/ServiceError.js";
+/**
+ * Obtiene los detalles de un libraryItem por su ID
+ * @param {string} itemId - ID del libraryItem
+ * @returns {Promise<Object|null>} El libraryItem encontrado o null
+ */
+export async function getLibraryItemById(itemId) {
+  return await LibraryItem.findById(itemId);
+}
 
 /**
  * Crea un nuevo libraryItem para el usuario logueado.

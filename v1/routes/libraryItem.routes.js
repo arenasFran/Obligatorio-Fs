@@ -2,6 +2,7 @@ import express from "express";
 import {
   createLibraryItemController,
   deleteLibraryItemController,
+  getLibraryItemByIdController,
   getLibraryItemsByCollectionController,
   getLibraryItemsByUserController,
 } from "../controllers/libraryItem.controller.js";
@@ -16,4 +17,7 @@ router.get(
 );
 router.get("/user", getLibraryItemsByUserController);
 router.delete("/:itemId", deleteLibraryItemController);
+
+// Endpoint para ver los detalles de un libraryItem específico
+router.get("/:itemId", getLibraryItemByIdController);
 export default router;
