@@ -21,7 +21,7 @@ router.get('/book/:bookId', getBookReviews);
 router.get('/my-reviews', authenticate, getUserReviews);
 
 
-router.put('/:id', authenticate, validate(updateReviewSchema), updateReview);
+router.patch('/:id', authenticate, validate(updateReviewSchema), updateReview);
 
 
 router.delete('/:id', authenticate, deleteReview);

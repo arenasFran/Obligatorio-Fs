@@ -40,17 +40,28 @@ export const createReviewSchema = Joi.object({
     })
 });
 
-export const updateReviewSchema = Joi.object({  
+export const updateReviewSchema = Joi.object({
   score: Joi.number()
     .integer()
     .min(1)
     .max(5)
+    .messages({
+      'number.base': 'El puntaje debe ser un número',
+      'number.integer': 'El puntaje debe ser un número entero', 
+      'number.min': 'El puntaje mínimo es 1',
+      'number.max': 'El puntaje máximo es 5',
+    })
     .optional(),
     
   comment: Joi.string()
     .min(10)
     .max(1000)
-    .optional(),
-
-  bookTitle: Joi.string().optional() 
-});
+    .messages({
+      'string.min': 'El comentario debe tener al menos 10 caracteres',
+      'string.max': 'El comentario no puede exceder 1000 caracteres',
+    })
+    .optional()
+}).min(1)
+  .messages({
+    'object.min': 'Debes cambiar al menos un campo para actualizar la review'
+  });

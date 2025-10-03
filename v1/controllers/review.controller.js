@@ -33,7 +33,7 @@ export const getBookReviews = async (req,res)=>{
 
 export const getUserReviews = async (req,res) =>{
     try{
-        const reviews = await getUserReviewsService(req.user.id);
+        const reviews = await getUserReviewsService(req.user._id);
         res.status(200).json({reviews, count: reviews.length});
     }
     catch(error)
@@ -47,7 +47,7 @@ export const getUserReviews = async (req,res) =>{
 export const updateReview = async (req, res) =>{
     try{
         const {id} = req.params;
-        const updatedReview = await updateReviewService(id, req.user.id, req.body);
+        const updatedReview = await updateReviewService(id, req.user._id, req.body);
         res.status(200).json({message: 'Review actualizada con éxito.'});
     }
     catch(error){
