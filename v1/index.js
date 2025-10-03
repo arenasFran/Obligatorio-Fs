@@ -5,6 +5,7 @@ import bookRoutes from "./routes/book.routes.js";
 import collectionRoutes from "./routes/collection.routes.js";
 import libraryItemRoutes from "./routes/libraryItem.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import reviewRoutes from "./routes/review.routes.js"
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -17,4 +18,5 @@ router.use("/user", userRoutes);
 router.use("/books", bookRoutes);
 router.use("/library-items", libraryItemRoutes);
 router.use("/collections", collectionRoutes);
+router.use('/reviews', reviewRoutes);
 export default router;

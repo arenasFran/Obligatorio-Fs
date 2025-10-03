@@ -3,7 +3,6 @@ import Review from '../models/review.model.js';
 export const createReviewService = async (userId, reviewData) => {
   const { bookId, score, comment, bookTitle, bookAuthors, bookImage } = reviewData;
   
-  // Verificar si ya existe una review de este usuario para este libro
   const existingReview = await Review.findOne({ userId, bookId });
   if (existingReview) {
     throw { status: 400, message: 'Ya has reseñado este libro' };
@@ -14,9 +13,7 @@ export const createReviewService = async (userId, reviewData) => {
     bookId,
     score,
     comment,
-    bookTitle,
-    bookAuthors,
-    bookImage
+    bookTitle
   });
 
   return await review.save();
