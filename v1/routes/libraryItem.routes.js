@@ -6,6 +6,7 @@ import {
   getLibraryItemsByCollectionController,
   getLibraryItemsByUserController,
   updateLibraryItemProgresoController,
+  updateLibraryItemEstadoController,
 } from "../controllers/libraryItem.controller.js";
 import { validate } from "../middlewares/validate.js";
 import { libraryItemSchema } from "../validators/libraryItem.validator.js";
@@ -23,5 +24,7 @@ router.delete("/:itemId", deleteLibraryItemController);
 router.get("/:itemId", getLibraryItemByIdController);
 
 // Endpoint para actualizar el progreso de un libraryItem específico
-router.patch("/:itemId/progreso", updateLibraryItemProgresoController);
+
+// Endpoint para actualizar el estado de un libraryItem específico
+router.patch("/:itemId/estado", updateLibraryItemEstadoController);
 export default router;

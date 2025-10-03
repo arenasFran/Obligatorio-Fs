@@ -1,4 +1,17 @@
 /**
+ * Actualiza el estado de un libraryItem específico
+ * @param {string} itemId - ID del libraryItem
+ * @param {string} estado - Nuevo estado
+ * @returns {Promise<Object|null>} El libraryItem actualizado o null si no existe
+ */
+export async function updateLibraryItemEstado(itemId, estado) {
+  return await LibraryItem.findByIdAndUpdate(
+    itemId,
+    { estado },
+    { new: true }
+  );
+}
+/**
  * Actualiza el progreso (páginas leídas) de un libraryItem específico
  * @param {string} itemId - ID del libraryItem
  * @param {number} progreso - Nuevo valor de progreso

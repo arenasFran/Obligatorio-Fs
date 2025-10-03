@@ -5,7 +5,28 @@ import {
   getLibraryItemsByCollection,
   getLibraryItemsByUser,
   updateLibraryItemProgreso,
+  updateLibraryItemEstado,
 } from "../services/libraryItem.services.js";
+/**
+ * Controlador para actualizar el estado de un libraryItem específico
+ */
+export async function updateLibraryItemEstadoController(req, res, next) {
+  try {
+    const { itemId } = req.params;
+    const { estado } = req.body;
+    const estadosValidos = ["NONE", "LEYENDO", "TERMINADO"];
+    if (!estadosValidos.includes(estado)) {
+      return res.status(400).json({ error: "El estado debe ser NONE, LEYENDO o TERMINADO" });
+    }
+    const updatedItem = await updateLibraryItemEstado(itemId, estado);
+    if (!updatedItem) {
+      return res.status(404).json({ error: "LibraryItem no encontrado" });
+    }
+    res.json(updatedItem);
+  } catch (error) {
+    next(error);
+  }
+}
 /**
  * Controlador para actualizar el progreso (páginas leídas) de un libraryItem específico
  */
