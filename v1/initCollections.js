@@ -2,9 +2,9 @@ import Collection from "./models/collection.model.js";
 import User from "./models/user.model.js";
 
 const defaultCollections = [
-  { titulo: "Favoritos" },
-  { titulo: "Por leer" },
-  { titulo: "Leídos" },
+  { name: "Favoritos" },
+  { name: "Por leer" },
+  { name: "Leídos" },
 ];
 
 const seedCollectionsForUsers = async () => {

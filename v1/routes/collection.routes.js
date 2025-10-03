@@ -2,6 +2,7 @@ import express from "express";
 import {
   createCollectionController,
   getUserCollectionsController,
+  updateCollectionNameController,
 } from "../controllers/collection.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 
@@ -16,5 +17,8 @@ router.post(
 
 // Endpoint para obtener todas las colecciones del usuario autenticado
 router.get("/", authenticate, getUserCollectionsController);
+
+// Endpoint para actualizar el nombre de una colección específica
+router.put("/:id", authenticate, updateCollectionNameController);
 
 export default router;

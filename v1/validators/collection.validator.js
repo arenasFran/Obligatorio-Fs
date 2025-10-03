@@ -1,13 +1,11 @@
 import Joi from "joi";
 
 export const collectionSchema = Joi.object({
-  titulo: Joi.string()
-    .required()
-    .messages({
-      "string.base": "El título debe ser un texto",
-      "string.empty": "El título es obligatorio",
-      "any.required": "El título es obligatorio",
-    }),
+  name: Joi.string().required().messages({
+    "string.base": "El título debe ser un texto",
+    "string.empty": "El título es obligatorio",
+    "any.required": "El título es obligatorio",
+  }),
   libraryItems: Joi.array()
     .items(Joi.string().hex().length(24))
     .optional()
@@ -21,7 +19,9 @@ export const collectionSchema = Joi.object({
 export function collectionValidation(req, res, next) {
   const { error } = collectionSchema.validate(req.body, { abortEarly: false });
   if (error) {
-    return res.status(400).json({ errors: error.details.map(e => e.message) });
+    return res
+      .status(400)
+      .json({ errors: error.details.map((e) => e.message) });
   }
   next();
 }

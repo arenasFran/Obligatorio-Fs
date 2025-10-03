@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import Collection from "../models/collection.model.js";
-import { createCollection } from "../services/collection.services.js";
+import { createCollection, updateCollectionName } from "../services/collection.services.js";
 /**
  * Controlador para crear una nueva colección para el usuario logueado.
  * @param {Request} req
@@ -33,6 +33,24 @@ export async function getUserCollectionsController(req, res, next) {
     });
 
     res.json(collections);
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Controlador para actualizar el nombre de una colección específica.
+ */
+export async function updateCollectionNameController(req, res, next) {
+  try {
+    const userId = req.user._id;
+    const collectionId = req.params.id;
+    const { name } = req.body;
+    if (!name) {
+      return res.status(400).json({ message: "El nombre es requerido" });
+    }
+    const updatedCollection = await updateCollectionName(collectionId, userId, name);
+    res.json(updatedCollection);
   } catch (error) {
     next(error);
   }
