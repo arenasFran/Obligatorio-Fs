@@ -19,7 +19,7 @@ export async function deleteCollectionController(req, res, next) {
   }
 }
 /**
- * Controlador para crear una nueva colección para el usuario logueado.
+
  * @param {Request} req
  * @param {Response} res
  * @param {Function} next
@@ -37,9 +37,6 @@ export async function createCollectionController(req, res, next) {
   }
 }
 
-/**
- * Controlador para obtener todas las colecciones del usuario autenticado
- */
 
 export async function getUserCollectionsController(req, res, next) {
   try {

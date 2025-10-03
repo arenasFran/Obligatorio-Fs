@@ -16,7 +16,6 @@ export const authenticate = (req, res, next) => {
     if (err) {
       return res.status(403).json({ error: "Token inválido" });
     } else {
-      // Asegura que el campo sea _id para compatibilidad con Mongoose
       req.user = { username: user.username, _id: user.id };
       next();
     }
