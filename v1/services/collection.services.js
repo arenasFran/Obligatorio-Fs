@@ -1,3 +1,20 @@
+/**
+ * Elimina una colección específica por su ID y usuario.
+ * @param {string} collectionId - ID de la colección.
+ * @param {string} userId - ID del usuario propietario.
+ * @returns {Promise<Object>} La colección eliminada.
+ */
+export async function deleteCollection(collectionId, userId) {
+  try {
+    const collection = await Collection.findOneAndDelete({ _id: collectionId, user: userId });
+    if (!collection) {
+      throw new ServiceError("Colección no encontrada", 404);
+    }
+    return collection;
+  } catch (error) {
+    throw new ServiceError("No se pudo eliminar la colección", 400);
+  }
+}
 import Collection from "../models/collection.model.js";
 import { ServiceError } from "../utils/ServiceError.js";
 
@@ -39,6 +56,9 @@ export async function updateCollectionName(collectionId, userId, newName) {
     }
     return collection;
   } catch (error) {
-    throw new ServiceError("No se pudo actualizar el nombre de la colección", 400);
+    throw new ServiceError(
+      "No se pudo actualizar el nombre de la colección",
+      400
+    );
   }
 }

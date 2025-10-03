@@ -3,6 +3,7 @@ import {
   createCollectionController,
   getUserCollectionsController,
   updateCollectionNameController,
+  deleteCollectionController,
 } from "../controllers/collection.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 
@@ -20,5 +21,8 @@ router.get("/", authenticate, getUserCollectionsController);
 
 // Endpoint para actualizar el nombre de una colección específica
 router.put("/:id", authenticate, updateCollectionNameController);
+
+// Endpoint para eliminar una colección específica
+router.delete("/:id", authenticate, deleteCollectionController);
 
 export default router;

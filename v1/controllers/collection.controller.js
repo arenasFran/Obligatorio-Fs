@@ -1,6 +1,23 @@
 import mongoose from "mongoose";
 import Collection from "../models/collection.model.js";
-import { createCollection, updateCollectionName } from "../services/collection.services.js";
+import {
+  createCollection,
+  updateCollectionName,
+  deleteCollection,
+} from "../services/collection.services.js";
+/**
+ * Controlador para eliminar una colección específica.
+ */
+export async function deleteCollectionController(req, res, next) {
+  try {
+    const userId = req.user._id;
+    const collectionId = req.params.id;
+    const deleted = await deleteCollection(collectionId, userId);
+    res.json({ message: "Colección eliminada", deleted });
+  } catch (error) {
+    next(error);
+  }
+}
 /**
  * Controlador para crear una nueva colección para el usuario logueado.
  * @param {Request} req
@@ -49,7 +66,11 @@ export async function updateCollectionNameController(req, res, next) {
     if (!name) {
       return res.status(400).json({ message: "El nombre es requerido" });
     }
-    const updatedCollection = await updateCollectionName(collectionId, userId, name);
+    const updatedCollection = await updateCollectionName(
+      collectionId,
+      userId,
+      name
+    );
     res.json(updatedCollection);
   } catch (error) {
     next(error);
