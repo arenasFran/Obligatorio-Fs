@@ -1,3 +1,16 @@
+/**
+ * Actualiza el progreso (páginas leídas) de un libraryItem específico
+ * @param {string} itemId - ID del libraryItem
+ * @param {number} progreso - Nuevo valor de progreso
+ * @returns {Promise<Object|null>} El libraryItem actualizado o null si no existe
+ */
+export async function updateLibraryItemProgreso(itemId, progreso) {
+  return await LibraryItem.findByIdAndUpdate(
+    itemId,
+    { progreso },
+    { new: true }
+  );
+}
 import LibraryItem from "../models/libraryItem.model.js";
 import { ServiceError } from "../utils/ServiceError.js";
 /**

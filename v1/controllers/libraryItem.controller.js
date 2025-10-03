@@ -4,7 +4,29 @@ import {
   getLibraryItemById,
   getLibraryItemsByCollection,
   getLibraryItemsByUser,
+  updateLibraryItemProgreso,
 } from "../services/libraryItem.services.js";
+/**
+ * Controlador para actualizar el progreso (páginas leídas) de un libraryItem específico
+ */
+export async function updateLibraryItemProgresoController(req, res, next) {
+  try {
+    const { itemId } = req.params;
+    const { progreso } = req.body;
+    if (typeof progreso !== "number" || progreso < 0) {
+      return res
+        .status(400)
+        .json({ error: "El progreso debe ser un número mayor o igual a 0" });
+    }
+    const updatedItem = await updateLibraryItemProgreso(itemId, progreso);
+    if (!updatedItem) {
+      return res.status(404).json({ error: "LibraryItem no encontrado" });
+    }
+    res.json(updatedItem);
+  } catch (error) {
+    next(error);
+  }
+}
 /**
  * Controlador para obtener los detalles de un libraryItem específico
  */
