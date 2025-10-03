@@ -6,7 +6,10 @@
  */
 export async function deleteCollection(collectionId, userId) {
   try {
-    const collection = await Collection.findOneAndDelete({ _id: collectionId, user: userId });
+    const collection = await Collection.findOneAndDelete({
+      _id: collectionId,
+      user: userId,
+    });
     if (!collection) {
       throw new ServiceError("Colección no encontrada", 404);
     }

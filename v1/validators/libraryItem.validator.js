@@ -6,12 +6,23 @@ export const libraryItemSchema = Joi.object({
     "string.empty": "El título es obligatorio",
     "any.required": "El título es obligatorio",
   }),
+  subtitle: Joi.string().optional().messages({
+    "string.base": "El subtítulo debe ser un texto",
+  }),
+  publishedDate: Joi.string().optional().messages({
+    "string.base": "La fecha de publicación debe ser un texto",
+  }),
+  pageCount: Joi.number().integer().min(0).optional().messages({
+    "number.base": "El número de páginas debe ser un número",
+    "number.integer": "El número de páginas debe ser entero",
+    "number.min": "El número de páginas no puede ser negativo",
+  }),
   coverUrl: Joi.string().uri().optional().messages({
     "string.base": "La URL de la portada debe ser un texto",
     "string.uri": "La URL de la portada debe ser válida",
   }),
-  category: Joi.string().optional().messages({
-    "string.base": "La categoría debe ser un texto",
+  categories: Joi.array().items(Joi.string()).optional().messages({
+    "array.base": "Las categorías deben ser un arreglo de textos",
   }),
   authors: Joi.array()
     .items(Joi.string().required())
@@ -43,5 +54,10 @@ export const libraryItemSchema = Joi.object({
     "number.base": "El progreso debe ser un número",
     "number.integer": "El progreso debe ser un número entero",
     "number.min": "El progreso no puede ser negativo",
+  }),
+  originalBookId: Joi.string().required().messages({
+    "string.base": "El originalBookId debe ser un texto",
+    "string.empty": "El originalBookId es obligatorio",
+    "any.required": "El originalBookId es obligatorio",
   }),
 });

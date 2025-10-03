@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import Collection from "../models/collection.model.js";
 import {
   createCollection,
-  updateCollectionName,
   deleteCollection,
+  updateCollectionName,
 } from "../services/collection.services.js";
 /**
  * Controlador para eliminar una colección específica.

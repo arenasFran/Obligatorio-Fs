@@ -1,9 +1,9 @@
 import express from "express";
 import {
   createCollectionController,
+  deleteCollectionController,
   getUserCollectionsController,
   updateCollectionNameController,
-  deleteCollectionController,
 } from "../controllers/collection.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 

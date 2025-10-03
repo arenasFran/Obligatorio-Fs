@@ -27,6 +27,7 @@ const libraryItemSchema = new Schema({
     ref: "Collection",
     required: true,
   },
+  originalBookId: { type: String, required: true },
 });
 
 export default mongoose.model("LibraryItem", libraryItemSchema);
