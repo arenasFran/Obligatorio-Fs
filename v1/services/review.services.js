@@ -1,16 +1,16 @@
 import Review from '../models/review.model.js';
 
 export const createReviewService = async (userId, reviewData) => {
-  const { bookId, score, comment, bookTitle, bookAuthors, bookImage } = reviewData;
+  const { originalBookId, score, comment, bookTitle, bookAuthors, bookImage } = reviewData;
   
-  const existingReview = await Review.findOne({ userId, bookId });
+  const existingReview = await Review.findOne({ userId, originalBookId });
   if (existingReview) {
     throw { status: 400, message: 'Ya has reseñado este libro' };
   }
 
   const review = new Review({
     userId,
-    bookId,
+    originalBookId,
     score,
     comment,
     bookTitle
@@ -19,8 +19,8 @@ export const createReviewService = async (userId, reviewData) => {
   return await review.save();
 };
 
-export const getBookReviewsService = async (bookId) => {
-  return await Review.find({ bookId })
+export const getBookReviewsService = async (originalBookId) => {
+  return await Review.find({ originalBookId })
     .populate('userId', 'username')
     .sort({ createdAt: -1 });
 };

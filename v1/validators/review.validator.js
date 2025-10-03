@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 export const createReviewSchema = Joi.object({
-  bookId: Joi.string()
+  originalBookId: Joi.string()
     .required()
     .messages({
       'string.empty': 'El ID del libro es requerido',
