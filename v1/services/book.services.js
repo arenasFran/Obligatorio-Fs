@@ -8,17 +8,12 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 let lastRequestTime = 0;
 const MIN_REQUEST_INTERVAL = 1000; // 1 segundo entre requests
 
-/**
- * Función para esperar un tiempo determinado
- * @param {number} ms - Milisegundos a esperar
- */
+// Función para esperar un tiempo determinado
+
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-/**
- * Obtiene libros desde la API de Google Books con retry y cache.
- * @param {string} query - Término de búsqueda para los libros.
- * @returns {Promise<Array>} Colección de libros encontrados.
- */
+// Obtiene libros desde la API de Google Books con retry y cache.
+
 export async function fetchBooksFromGoogle(query = "book") {
   const cacheKey = `books_${query}`;
 

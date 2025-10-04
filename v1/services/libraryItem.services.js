@@ -1,18 +1,14 @@
-/**
- * Actualiza el estado de un libraryItem específico
- * @param {string} itemId - ID del libraryItem
- * @param {string} estado - Nuevo estado
- * @returns {Promise<Object|null>} El libraryItem actualizado o null si no existe
- */
+import LibraryItem from "../models/libraryItem.model.js";
+import { ServiceError } from "../utils/ServiceError.js";
+
+// Actualiza el estado de un libraryItem específico
+
 export async function updateLibraryItemEstado(itemId, estado) {
   return await LibraryItem.findByIdAndUpdate(itemId, { estado }, { new: true });
 }
-/**
- * Actualiza el progreso (páginas leídas) de un libraryItem específico
- * @param {string} itemId - ID del libraryItem
- * @param {number} progreso - Nuevo valor de progreso
- * @returns {Promise<Object|null>} El libraryItem actualizado o null si no existe
- */
+
+//Actualiza el progreso (páginas leídas) de un libraryItem específico
+
 export async function updateLibraryItemProgreso(itemId, pages) {
   const item = await LibraryItem.findById(itemId);
   if (!item) return null;
@@ -42,13 +38,9 @@ export async function updateLibraryItemProgreso(itemId, pages) {
   }
   return updated;
 }
-import LibraryItem from "../models/libraryItem.model.js";
-import { ServiceError } from "../utils/ServiceError.js";
-/**
- * Obtiene los detalles de un libraryItem por su ID
- * @param {string} itemId - ID del libraryItem
- * @returns {Promise<Object|null>} El libraryItem encontrado o null
- */
+
+// Obtiene los detalles de un libraryItem por su ID
+
 export async function getLibraryItemById(itemId) {
   return await LibraryItem.findById(itemId);
 }
@@ -92,21 +84,13 @@ export async function createLibraryItem(itemData, userId) {
   }
 }
 
-/**
- * Obtiene todos los library items de una colección
- * @param {string} collectionId - ID de la colección
- * @returns {Promise<Array>} Lista de library items
- */
+// Obtiene todos los library items de una colección
+
 export async function getLibraryItemsByCollection(collectionId) {
   return await LibraryItem.find({ collectionId });
 }
 
-/**
- * Elimina un libraryItem por su ID
- * @param {string} itemId - ID del libraryItem
- * @param {string} userId - ID del usuario autenticado
- * @returns {Promise<Object|null>} El item eliminado o null si no existe
- */
+// Elimina un libraryItem por su ID
 export async function deleteLibraryItem(itemId, userId) {
   const deleted = await LibraryItem.findOneAndDelete({ _id: itemId, userId });
   if (deleted) {
@@ -122,11 +106,8 @@ export async function deleteLibraryItem(itemId, userId) {
   return deleted;
 }
 
-/**
- * Obtiene todos los libraryItems de un usuario
- * @param {string} userId - ID del usuario autenticado
- * @returns {Promise<Array>}
- */
+// Obtiene todos los libraryItems de un usuario
+
 export async function getLibraryItemsByUser(userId) {
   return await LibraryItem.find({ userId });
 }

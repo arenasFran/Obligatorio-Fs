@@ -4,14 +4,8 @@ import PointsPerDate from "../models/pointsPerDate.model.js";
 import User from "../models/user.model.js";
 import { ServiceError } from "../utils/ServiceError.js";
 
-/**
- * Registra puntos y actualiza el total del usuario
- * @param {Object} params
- * @param {string} params.userId
- * @param {string} params.libraryItemId
- * @param {number} params.quantity - puntos a sumar (páginas nuevas leídas)
- * @param {Date} [params.date]
- */
+// Registra puntos y actualiza el total del usuario
+
 export async function addPoints({
   userId,
   libraryItemId,
@@ -39,15 +33,23 @@ export async function addPoints({
 
   const updated = await User.findByIdAndUpdate(
     userId,
-    { $inc: { totalPoints: quantity } },
+    {
+      $inc: { totalPoints: quantity },
+      $push: {
+        pointsPerDate: {
+          quantity,
+          date,
+          libraryItem: libraryItemId,
+        },
+      },
+    },
     { new: true }
   );
   return { points, user: updated };
 }
 
-/**
- * Obtiene puntos del usuario opcionalmente en un rango de fechas
- */
+// Obtiene puntos del usuario opcionalmente en un rango de fechas
+
 export async function getUserPoints({ userId, from, to }) {
   const query = { user: userId };
   if (from || to) {
@@ -58,9 +60,8 @@ export async function getUserPoints({ userId, from, to }) {
   return await PointsPerDate.find(query).sort({ date: -1 });
 }
 
-/**
- * Obtiene el total de puntos acumulados del usuario desde la colección PointsPerDate
- */
+// Obtiene el total de puntos acumulados del usuario desde la colección PointsPerDate
+
 export async function getUserPointsSummary(userId) {
   const agg = await PointsPerDate.aggregate([
     { $match: { user: new mongoose.Types.ObjectId(userId) } },

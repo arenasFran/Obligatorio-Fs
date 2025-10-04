@@ -25,8 +25,11 @@ export async function updateQuote(quoteId, data) {
   const allowedFields = {};
   if (typeof data.pag !== "undefined") allowedFields.pag = data.pag;
   if (typeof data.content !== "undefined") allowedFields.content = data.content;
-  if (typeof data.isFavorite !== "undefined") allowedFields.isFavorite = data.isFavorite;
-  const updated = await Quote.findByIdAndUpdate(quoteId, allowedFields, { new: true });
+  if (typeof data.isFavorite !== "undefined")
+    allowedFields.isFavorite = data.isFavorite;
+  const updated = await Quote.findByIdAndUpdate(quoteId, allowedFields, {
+    new: true,
+  });
   if (!updated) throw new ServiceError("Cita no encontrada", 404);
   return updated;
 }

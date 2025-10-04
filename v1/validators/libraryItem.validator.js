@@ -44,8 +44,12 @@ export const libraryItemSchema = Joi.object({
       "any.only": "El estado debe ser NONE, LEYENDO o TERMINADO",
       "any.required": "El estado es obligatorio",
     }),
+  collectionId: Joi.string().required().messages({
+    "string.base": "El collectionId debe ser un texto",
+    "string.empty": "El collectionId es obligatorio",
+    "any.required": "El collectionId es obligatorio",
+  }),
 
- 
   progreso: Joi.number().integer().min(0).optional().messages({
     "number.base": "El progreso debe ser un número",
     "number.integer": "El progreso debe ser un número entero",

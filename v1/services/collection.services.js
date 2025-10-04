@@ -1,9 +1,5 @@
-/**
- * Elimina una colección específica por su ID y usuario.
- * @param {string} collectionId - ID de la colección.
- * @param {string} userId - ID del usuario propietario.
- * @returns {Promise<Object>} La colección eliminada.
- */
+// Elimina una colección específica por su ID y usuario.
+
 export async function deleteCollection(collectionId, userId) {
   try {
     const collection = await Collection.findOneAndDelete({
@@ -21,12 +17,8 @@ export async function deleteCollection(collectionId, userId) {
 import Collection from "../models/collection.model.js";
 import { ServiceError } from "../utils/ServiceError.js";
 
-/**
- * Crea una nueva colección para el usuario logueado.
- * @param {Object} collectionData - Datos de la colección.
- * @param {string} userId - ID del usuario propietario.
- * @returns {Promise<Object>} La colección creada.
- */
+// Crea una nueva colección para el usuario logueado.
+
 export async function createCollection(collectionData, userId) {
   try {
     const collection = new Collection({
@@ -40,13 +32,8 @@ export async function createCollection(collectionData, userId) {
   }
 }
 
-/**
- * Actualiza el nombre de una colección específica por su ID y usuario.
- * @param {string} collectionId - ID de la colección.
- * @param {string} userId - ID del usuario propietario.
- * @param {string} newName - Nuevo nombre de la colección.
- * @returns {Promise<Object>} La colección actualizada.
- */
+// Actualiza el nombre de una colección específica por su ID y usuario.
+
 export async function updateCollectionName(collectionId, userId, newName) {
   try {
     const collection = await Collection.findOneAndUpdate(
