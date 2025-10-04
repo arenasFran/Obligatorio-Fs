@@ -26,6 +26,7 @@ const userSchema = new Schema({
   libraryItems: [{ type: Schema.Types.ObjectId, ref: "LibraryItem" }],
   pointsPerDate: { type: [pointsPerDateSchema], default: [] },
   level: { type: Schema.Types.ObjectId, ref: "Level" },
+  profilePictureUrl: { type: String, required: false },
 });
 
 const User = mongoose.model("User", userSchema);
