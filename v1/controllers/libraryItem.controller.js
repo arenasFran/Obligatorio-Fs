@@ -4,8 +4,8 @@ import {
   getLibraryItemById,
   getLibraryItemsByCollection,
   getLibraryItemsByUser,
-  updateLibraryItemProgreso,
   updateLibraryItemEstado,
+  updateLibraryItemProgreso,
 } from "../services/libraryItem.services.js";
 /**
  * Controlador para actualizar el estado de un libraryItem específico
@@ -16,7 +16,9 @@ export async function updateLibraryItemEstadoController(req, res, next) {
     const { estado } = req.body;
     const estadosValidos = ["NONE", "LEYENDO", "TERMINADO"];
     if (!estadosValidos.includes(estado)) {
-      return res.status(400).json({ error: "El estado debe ser NONE, LEYENDO o TERMINADO" });
+      return res
+        .status(400)
+        .json({ error: "El estado debe ser NONE, LEYENDO o TERMINADO" });
     }
     const updatedItem = await updateLibraryItemEstado(itemId, estado);
     if (!updatedItem) {
@@ -33,13 +35,13 @@ export async function updateLibraryItemEstadoController(req, res, next) {
 export async function updateLibraryItemProgresoController(req, res, next) {
   try {
     const { itemId } = req.params;
-    const { progreso } = req.body;
-    if (typeof progreso !== "number" || progreso < 0) {
+    const { pages } = req.body;
+    if (typeof pages !== "number" || pages <= 0) {
       return res
         .status(400)
-        .json({ error: "El progreso debe ser un número mayor o igual a 0" });
+        .json({ error: "Las páginas deben ser un número mayor a 0" });
     }
-    const updatedItem = await updateLibraryItemProgreso(itemId, progreso);
+    const updatedItem = await updateLibraryItemProgreso(itemId, pages);
     if (!updatedItem) {
       return res.status(404).json({ error: "LibraryItem no encontrado" });
     }

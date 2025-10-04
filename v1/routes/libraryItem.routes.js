@@ -23,7 +23,9 @@ router.delete("/:itemId", deleteLibraryItemController);
 // Endpoint para ver los detalles de un libraryItem específico
 router.get("/:itemId", getLibraryItemByIdController);
 
-// Endpoint para actualizar el progreso de un libraryItem específico
+// Endpoint para agregar páginas leídas a un libraryItem (nuevo nombre)
+router.patch("/:itemId/add-pages", updateLibraryItemProgresoController);
+// Alias temporal (deprecated) para mantener compatibilidad
 router.patch("/:itemId/progreso", updateLibraryItemProgresoController);
 // Endpoint para actualizar el estado de un libraryItem específico
 router.patch("/:itemId/estado", updateLibraryItemEstadoController);

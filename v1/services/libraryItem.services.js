@@ -5,11 +5,7 @@
  * @returns {Promise<Object|null>} El libraryItem actualizado o null si no existe
  */
 export async function updateLibraryItemEstado(itemId, estado) {
-  return await LibraryItem.findByIdAndUpdate(
-    itemId,
-    { estado },
-    { new: true }
-  );
+  return await LibraryItem.findByIdAndUpdate(itemId, { estado }, { new: true });
 }
 /**
  * Actualiza el progreso (páginas leídas) de un libraryItem específico
@@ -17,12 +13,34 @@ export async function updateLibraryItemEstado(itemId, estado) {
  * @param {number} progreso - Nuevo valor de progreso
  * @returns {Promise<Object|null>} El libraryItem actualizado o null si no existe
  */
-export async function updateLibraryItemProgreso(itemId, progreso) {
-  return await LibraryItem.findByIdAndUpdate(
+export async function updateLibraryItemProgreso(itemId, pages) {
+  const item = await LibraryItem.findById(itemId);
+  if (!item) return null;
+  const increment = Number(pages);
+  if (!Number.isFinite(increment) || increment <= 0) {
+    throw new ServiceError(
+      "Las páginas a agregar deben ser un número mayor a 0",
+      400
+    );
+  }
+  const updated = await LibraryItem.findByIdAndUpdate(
     itemId,
-    { progreso },
+    { $inc: { progreso: increment } },
     { new: true }
   );
+  // Registrar puntos exactamente igual a las páginas agregadas
+  const { addPoints } = await import("./points.services.js");
+  try {
+    await addPoints({
+      userId: item.userId,
+      libraryItemId: item._id,
+      quantity: increment,
+    });
+  } catch (e) {
+    // No romper la actualización del progreso si falla el registro de puntos
+    console.error("Error registrando puntos:", e);
+  }
+  return updated;
 }
 import LibraryItem from "../models/libraryItem.model.js";
 import { ServiceError } from "../utils/ServiceError.js";
@@ -35,7 +53,6 @@ export async function getLibraryItemById(itemId) {
   return await LibraryItem.findById(itemId);
 }
 
-
 export async function createLibraryItem(itemData, userId) {
   try {
     const libraryItem = new LibraryItem({
@@ -44,6 +61,15 @@ export async function createLibraryItem(itemData, userId) {
       collectionId: itemData.collectionId,
     });
     await libraryItem.save();
+    // Mantener relación bidireccional con el usuario
+    try {
+      const { default: User } = await import("../models/user.model.js");
+      await User.findByIdAndUpdate(userId, {
+        $addToSet: { libraryItems: libraryItem._id },
+      });
+    } catch (err) {
+      console.error("Error enlazando libraryItem al usuario:", err);
+    }
     return libraryItem;
   } catch (error) {
     if (error.name === "ValidationError") {
@@ -82,7 +108,18 @@ export async function getLibraryItemsByCollection(collectionId) {
  * @returns {Promise<Object|null>} El item eliminado o null si no existe
  */
 export async function deleteLibraryItem(itemId, userId) {
-  return await LibraryItem.findOneAndDelete({ _id: itemId, userId });
+  const deleted = await LibraryItem.findOneAndDelete({ _id: itemId, userId });
+  if (deleted) {
+    try {
+      const { default: User } = await import("../models/user.model.js");
+      await User.findByIdAndUpdate(userId, {
+        $pull: { libraryItems: deleted._id },
+      });
+    } catch (err) {
+      console.error("Error desenlazando libraryItem del usuario:", err);
+    }
+  }
+  return deleted;
 }
 
 /**
