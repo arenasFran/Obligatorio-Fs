@@ -3,6 +3,7 @@ import { authenticate } from "./middlewares/auth.middleware.js";
 import authRoutes from "./routes/auth.routes.js";
 import bookRoutes from "./routes/book.routes.js";
 import collectionRoutes from "./routes/collection.routes.js";
+import levelRoutes from "./routes/level.routes.js";
 import libraryItemRoutes from "./routes/libraryItem.routes.js";
 import pointsRoutes from "./routes/points.routes.js";
 import quoteRoutes from "./routes/quote.routes.js";
@@ -17,6 +18,7 @@ router.get("/", (req, res) => {
 router.use("/auth", authRoutes);
 router.use(authenticate);
 router.use("/user", userRoutes);
+router.use("/levels", levelRoutes);
 router.use("/books", bookRoutes);
 router.use("/library-items", libraryItemRoutes);
 router.use("/collections", collectionRoutes);

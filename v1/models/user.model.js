@@ -25,6 +25,7 @@ const userSchema = new Schema({
   objectivePerDay: { type: Number, default: 0 },
   libraryItems: [{ type: Schema.Types.ObjectId, ref: "LibraryItem" }],
   pointsPerDate: { type: [pointsPerDateSchema], default: [] },
+  level: { type: Schema.Types.ObjectId, ref: "Level" },
 });
 
 const User = mongoose.model("User", userSchema);

@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 import seedCollectionsForUsers from "../initCollections.js";
+import seedLevels from "../initLevels.js";
 import seedPlans from "../initPlans.js";
 const connectDb = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI_DEV);
     await seedPlans();
+    await seedLevels();
     await seedCollectionsForUsers();
     console.log("Base de datos on");
   } catch (error) {

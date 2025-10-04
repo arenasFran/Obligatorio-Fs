@@ -1,3 +1,4 @@
+import Level from "../models/level.model.js";
 import Plan from "../models/plan.model.js";
 import User from "../models/user.model.js";
 import { ServiceError } from "../utils/ServiceError.js";
@@ -61,4 +62,29 @@ export const changeObjectivePerDayService = async (userId, objectivePerDay) => {
   ).select("-password");
 
   return updated;
+};
+
+export const getUserLevelService = async (userId) => {
+  const user = await User.findById(userId).select("totalPoints");
+  if (!user) throw new ServiceError("Usuario no encontrado", 404);
+
+  const levels = await Level.find().sort({ totalPointsRequired: 1 });
+  if (!levels.length)
+    throw new ServiceError("No hay niveles configurados", 404);
+
+  const userPoints = user.totalPoints || 0;
+  // Highest level the user qualifies for
+  let current = null;
+  for (const lvl of levels) {
+    if (userPoints >= lvl.totalPointsRequired) current = lvl;
+    else break;
+  }
+
+  if (!current) {
+    // User doesn't reach the first threshold yet
+    const first = levels[0];
+    return first;
+  }
+
+  return current;
 };

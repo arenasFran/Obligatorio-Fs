@@ -1,6 +1,7 @@
 import {
   changeObjectivePerDayService,
   changeUserPlanService,
+  getUserLevelService,
 } from "../services/users.services.js";
 
 export const updateUser = async (req, res) => {
@@ -13,6 +14,16 @@ export const updateUser = async (req, res) => {
       message: "Plan actualizado correctamente",
       user: updatedUser.plan,
     });
+  } catch (error) {
+    const status = error.status || 500;
+    res.status(status).json({ error: error.message });
+  }
+};
+
+export const getMyLevel = async (req, res) => {
+  try {
+    const level = await getUserLevelService(req.user._id);
+    res.status(200).json(level);
   } catch (error) {
     const status = error.status || 500;
     res.status(status).json({ error: error.message });
