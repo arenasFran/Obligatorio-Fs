@@ -1,3 +1,5 @@
+import Collection from "../models/collection.model.js";
+import { ServiceError } from "../utils/ServiceError.js";
 // Elimina una colección específica por su ID y usuario.
 
 export async function deleteCollection(collectionId, userId) {
@@ -14,8 +16,6 @@ export async function deleteCollection(collectionId, userId) {
     throw new ServiceError("No se pudo eliminar la colección", 400);
   }
 }
-import Collection from "../models/collection.model.js";
-import { ServiceError } from "../utils/ServiceError.js";
 
 // Crea una nueva colección para el usuario logueado.
 
