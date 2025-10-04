@@ -28,6 +28,7 @@ const libraryItemSchema = new Schema({
     required: true,
   },
   originalBookId: { type: String, required: true },
+  quotes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Quote" }],
 });
 
 export default mongoose.model("LibraryItem", libraryItemSchema);

@@ -6,7 +6,7 @@ import {
   updateQuoteController,
 } from "../controllers/quote.controller.js";
 import { validate } from "../middlewares/validate.js";
-import { quoteSchema } from "../validators/quote.validator.js";
+import { quoteEditSchema, quoteSchema } from "../validators/quote.validator.js";
 
 const router = express.Router({ mergeParams: true });
 
@@ -17,7 +17,7 @@ router.get("/library-item/:libraryItemId", getQuotesByLibraryItemController);
 router.post("/", validate(quoteSchema), createQuoteController);
 
 // Editar cita
-router.put("/:quoteId", validate(quoteSchema), updateQuoteController);
+router.put("/:quoteId", validate(quoteEditSchema), updateQuoteController);
 
 // Eliminar cita
 router.delete("/:quoteId", deleteQuoteController);
