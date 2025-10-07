@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 const petSchema = new mongoose.Schema({
-  hungry: { type: Number, default: 0 },
   hungryCostPerHour: { type: Number, default: 1 },
   description: { type: String, required: true },
   name: { type: String, required: true },
