@@ -45,6 +45,13 @@ export async function addPoints({
     },
     { new: true }
   );
+  // Actualizar racha si corresponde (objetivo diario alcanzado)
+  try {
+    const { checkDailyProgress } = await import("./streak.services.js");
+    await checkDailyProgress(userId);
+  } catch (e) {
+    console.error("Error actualizando racha tras agregar puntos:", e);
+  }
   // Desbloquear mascotas elegibles y reducir hambre de la mascota seleccionada
   try {
     const { unlockEligiblePetsForUser, reduceHungerOnReading } = await import(

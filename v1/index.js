@@ -9,6 +9,7 @@ import petRoutes from "./routes/pet.routes.js";
 import pointsRoutes from "./routes/points.routes.js";
 import quoteRoutes from "./routes/quote.routes.js";
 import reviewRoutes from "./routes/review.routes.js";
+import streakRoutes from "./routes/streak.routes.js";
 import userRoutes from "./routes/user.routes.js";
 const router = express.Router();
 
@@ -26,5 +27,6 @@ router.use("/collections", collectionRoutes);
 router.use("/reviews", reviewRoutes);
 router.use("/quotes", quoteRoutes);
 router.use("/points", pointsRoutes);
+router.use("/streak", streakRoutes);
 router.use("/pets", petRoutes);
 export default router;
