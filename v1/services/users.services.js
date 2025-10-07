@@ -73,7 +73,6 @@ export const getUserLevelService = async (userId) => {
     throw new ServiceError("No hay niveles configurados", 404);
 
   const userPoints = user.totalPoints || 0;
-  // Highest level the user qualifies for
   let current = null;
   for (const lvl of levels) {
     if (userPoints >= lvl.totalPointsRequired) current = lvl;
@@ -81,7 +80,6 @@ export const getUserLevelService = async (userId) => {
   }
 
   if (!current) {
-    // User doesn't reach the first threshold yet
     const first = levels[0];
     return first;
   }
