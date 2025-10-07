@@ -5,7 +5,6 @@ const levelSchema = new mongoose.Schema({
   description: { type: String, required: true },
   ImageUrl: { type: String, required: true },
   totalPointsRequired: { type: Number, required: true },
-  isUnlocked: { type: Boolean, default: false },
 });
 
 export default mongoose.model("Level", levelSchema);
