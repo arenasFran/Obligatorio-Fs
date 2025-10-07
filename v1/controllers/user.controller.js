@@ -2,6 +2,7 @@ import {
   changeObjectivePerDayService,
   changeUserPlanService,
   getUserLevelService,
+  getUserByIdService
 } from "../services/users.services.js";
 
 export const updateUser = async (req, res) => {
@@ -45,3 +46,14 @@ export const updateObjectivePerDay = async (req, res) => {
     res.status(status).json({ error: error.message });
   }
 };
+
+export const getMyProfile = async (req, res) => {
+  try {
+    const user = await getUserByIdService(req.user._id);
+    res.status(200).json(user); // el service ya excluye password
+  } catch (error) {
+    const status = error.status || 500;
+    res.status(status).json({ error: error.message });
+  }
+};
+

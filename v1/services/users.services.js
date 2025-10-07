@@ -86,3 +86,12 @@ export const getUserLevelService = async (userId) => {
 
   return current;
 };
+
+
+export const getUserByIdService = async (userId) => {
+  const user = await User.findById(userId)
+    .select("-password")
+    .populate("plan", "name price maxReviews");
+  if (!user) throw new ServiceError("Usuario no encontrado", 404);
+  return user;
+};
