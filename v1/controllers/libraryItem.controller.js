@@ -7,9 +7,7 @@ import {
   updateLibraryItemEstado,
   updateLibraryItemProgreso,
 } from "../services/libraryItem.services.js";
-/**
- * Controlador para actualizar el estado de un libraryItem específico
- */
+
 export async function updateLibraryItemEstadoController(req, res, next) {
   try {
     const { itemId } = req.params;
@@ -29,9 +27,7 @@ export async function updateLibraryItemEstadoController(req, res, next) {
     next(error);
   }
 }
-/**
- * Controlador para actualizar el progreso (páginas leídas) de un libraryItem específico
- */
+
 export async function updateLibraryItemProgresoController(req, res, next) {
   try {
     const { itemId } = req.params;
@@ -50,9 +46,7 @@ export async function updateLibraryItemProgresoController(req, res, next) {
     next(error);
   }
 }
-/**
- * Controlador para obtener los detalles de un libraryItem específico
- */
+
 export async function getLibraryItemByIdController(req, res, next) {
   try {
     const { itemId } = req.params;
@@ -77,9 +71,7 @@ export async function createLibraryItemController(req, res, next) {
   }
 }
 
-/**
- * Controlador para obtener todos los library items de una colección específica.
- */
+
 export async function getLibraryItemsByCollectionController(req, res, next) {
   try {
     const { collectionId } = req.params;
@@ -90,9 +82,6 @@ export async function getLibraryItemsByCollectionController(req, res, next) {
   }
 }
 
-/**
- * Controlador para eliminar un libraryItem específico
- */
 export async function deleteLibraryItemController(req, res, next) {
   try {
     const { itemId } = req.params;
@@ -110,9 +99,6 @@ export async function deleteLibraryItemController(req, res, next) {
   }
 }
 
-/**
- * Controlador para obtener todos los libraryItems del usuario autenticado
- */
 export async function getLibraryItemsByUserController(req, res, next) {
   try {
     const userId = req.user._id; // inyectado por middleware de auth

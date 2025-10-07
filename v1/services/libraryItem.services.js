@@ -46,6 +46,14 @@ export async function getLibraryItemById(itemId) {
 }
 
 export async function createLibraryItem(itemData, userId) {
+  const exists = await LibraryItem.findOne({
+    userId: userId,
+    originalBookId: itemData.originalBookId,
+  })
+  if(exists){
+    throw new ServiceError('No se permiten libros repetidos.', 400)
+  }
+
   try {
     const libraryItem = new LibraryItem({
       ...itemData,
