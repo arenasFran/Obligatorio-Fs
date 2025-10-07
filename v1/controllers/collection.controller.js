@@ -18,12 +18,7 @@ export async function deleteCollectionController(req, res, next) {
     next(error);
   }
 }
-/**
 
- * @param {Request} req
- * @param {Response} res
- * @param {Function} next
- */
 export async function createCollectionController(req, res, next) {
   try {
     const userId = req.user._id;
@@ -36,7 +31,6 @@ export async function createCollectionController(req, res, next) {
     next(error);
   }
 }
-
 
 export async function getUserCollectionsController(req, res, next) {
   try {

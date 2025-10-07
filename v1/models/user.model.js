@@ -27,6 +27,11 @@ const userSchema = new Schema({
   pointsPerDate: { type: [pointsPerDateSchema], default: [] },
   level: { type: Schema.Types.ObjectId, ref: "Level" },
   profilePictureUrl: { type: String, required: false },
+  // Mascotas
+  unlockedPets: { type: [Schema.Types.ObjectId], ref: "Pet", default: [] },
+  selectedPet: { type: Schema.Types.ObjectId, ref: "Pet", default: null },
+  selectedPetHunger: { type: Number, default: 0, min: 0, max: 100 },
+  selectedPetLastUpdate: { type: Date, default: null },
 });
 
 const User = mongoose.model("User", userSchema);

@@ -45,6 +45,16 @@ export async function addPoints({
     },
     { new: true }
   );
+  // Desbloquear mascotas elegibles y reducir hambre de la mascota seleccionada
+  try {
+    const { unlockEligiblePetsForUser, reduceHungerOnReading } = await import(
+      "./pet.services.js"
+    );
+    await unlockEligiblePetsForUser(userId);
+    await reduceHungerOnReading(userId, quantity);
+  } catch (e) {
+    console.error("Error actualizando mascotas tras agregar puntos:", e);
+  }
   return { points, user: updated };
 }
 
