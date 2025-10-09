@@ -18,7 +18,11 @@ export async function updateLibraryItemEstadoController(req, res, next) {
         .status(400)
         .json({ error: "El estado debe ser NONE, LEYENDO o TERMINADO" });
     }
-    const updatedItem = await updateLibraryItemEstado(itemId, estado);
+    const updatedItem = await updateLibraryItemEstado(
+      itemId,
+      req.user._id,
+      estado
+    );
     if (!updatedItem) {
       return res.status(404).json({ error: "LibraryItem no encontrado" });
     }
@@ -37,7 +41,11 @@ export async function updateLibraryItemProgresoController(req, res, next) {
         .status(400)
         .json({ error: "Las páginas deben ser un número mayor a 0" });
     }
-    const updatedItem = await updateLibraryItemProgreso(itemId, pages);
+    const updatedItem = await updateLibraryItemProgreso(
+      itemId,
+      req.user._id,
+      pages
+    );
     if (!updatedItem) {
       return res.status(404).json({ error: "LibraryItem no encontrado" });
     }
@@ -50,7 +58,7 @@ export async function updateLibraryItemProgresoController(req, res, next) {
 export async function getLibraryItemByIdController(req, res, next) {
   try {
     const { itemId } = req.params;
-    const item = await getLibraryItemById(itemId);
+    const item = await getLibraryItemById(itemId, req.user._id);
     if (!item) {
       return res.status(404).json({ error: "LibraryItem no encontrado" });
     }
@@ -71,11 +79,10 @@ export async function createLibraryItemController(req, res, next) {
   }
 }
 
-
 export async function getLibraryItemsByCollectionController(req, res, next) {
   try {
     const { collectionId } = req.params;
-    const items = await getLibraryItemsByCollection(collectionId);
+    const items = await getLibraryItemsByCollection(collectionId, req.user._id);
     res.json(items);
   } catch (error) {
     next(error);

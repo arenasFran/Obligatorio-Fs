@@ -8,7 +8,7 @@ import {
 export async function getQuotesByLibraryItemController(req, res, next) {
   try {
     const { libraryItemId } = req.params;
-    const quotes = await getQuotesByLibraryItem(libraryItemId);
+    const quotes = await getQuotesByLibraryItem(libraryItemId, req.user._id);
     res.json(quotes);
   } catch (error) {
     next(error);
@@ -17,7 +17,7 @@ export async function getQuotesByLibraryItemController(req, res, next) {
 
 export async function createQuoteController(req, res, next) {
   try {
-    const quote = await createQuote(req.body);
+    const quote = await createQuote(req.user._id, req.body);
     res.status(201).json(quote);
   } catch (error) {
     next(error);
@@ -27,7 +27,7 @@ export async function createQuoteController(req, res, next) {
 export async function updateQuoteController(req, res, next) {
   try {
     const { quoteId } = req.params;
-    const updated = await updateQuote(quoteId, req.body);
+    const updated = await updateQuote(quoteId, req.user._id, req.body);
     res.json(updated);
   } catch (error) {
     next(error);
@@ -37,7 +37,7 @@ export async function updateQuoteController(req, res, next) {
 export async function deleteQuoteController(req, res, next) {
   try {
     const { quoteId } = req.params;
-    const deleted = await deleteQuote(quoteId);
+    const deleted = await deleteQuote(quoteId, req.user._id);
     res.json({ message: "Cita eliminada", deleted });
   } catch (error) {
     next(error);
