@@ -5,7 +5,7 @@ import { initPets } from "../initPets.js";
 import seedPlans from "../initPlans.js";
 const connectDb = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI_DEV_Local);
+    await mongoose.connect(process.env.MONGO_URI_DEV);
     // await seedPlans();
     // await seedLevels();
     // await initPets();
