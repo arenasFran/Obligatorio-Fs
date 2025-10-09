@@ -1,4 +1,5 @@
 import express from "express";
+import Joi from "joi";
 import {
   createCollectionController,
   deleteCollectionController,
@@ -6,23 +7,32 @@ import {
   updateCollectionNameController,
 } from "../controllers/collection.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
+import { validate } from "../middlewares/validate.js";
+import { objectIdParam } from "../validators/common.js";
 
 const router = express.Router({ mergeParams: true });
-// Endpoint para crear una nueva colección para el usuario autenticado
+
 router.post(
   "/",
   authenticate,
-
+  validate({ body: Joi.object({ name: Joi.string().min(1).required() }) }),
   createCollectionController
 );
 
-// Endpoint para obtener todas las colecciones del usuario autenticado
 router.get("/", authenticate, getUserCollectionsController);
 
-// Endpoint para actualizar el nombre de una colección específica
-router.put("/:id", authenticate, updateCollectionNameController);
+router.put(
+  "/:id",
+  authenticate,
+  validate({ params: objectIdParam("id") }),
+  updateCollectionNameController
+);
 
-// Endpoint para eliminar una colección específica
-router.delete("/:id", authenticate, deleteCollectionController);
+router.delete(
+  "/:id",
+  authenticate,
+  validate({ params: objectIdParam("id") }),
+  deleteCollectionController
+);
 
 export default router;

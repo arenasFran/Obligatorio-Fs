@@ -1,4 +1,5 @@
 import express from "express";
+import Joi from "joi";
 import {
   createLibraryItemController,
   deleteLibraryItemController,
@@ -9,23 +10,49 @@ import {
   updateLibraryItemProgresoController,
 } from "../controllers/libraryItem.controller.js";
 import { validate } from "../middlewares/validate.js";
+import { objectIdParam } from "../validators/common.js";
 import { libraryItemSchema } from "../validators/libraryItem.validator.js";
 const router = express.Router({ mergeParams: true });
 
-router.post("/add", validate(libraryItemSchema), createLibraryItemController);
+router.post(
+  "/add",
+  validate({ body: libraryItemSchema }),
+  createLibraryItemController
+);
 router.get(
   "/getFromcollections/:collectionId/items",
+  validate({ params: objectIdParam("collectionId") }),
   getLibraryItemsByCollectionController
 );
 router.get("/user", getLibraryItemsByUserController);
-router.delete("/:itemId", deleteLibraryItemController);
+router.delete(
+  "/:itemId",
+  validate({ params: objectIdParam("itemId") }),
+  deleteLibraryItemController
+);
 
-// Endpoint para ver los detalles de un libraryItem específico
-router.get("/:itemId", getLibraryItemByIdController);
+router.get(
+  "/:itemId",
+  validate({ params: objectIdParam("itemId") }),
+  getLibraryItemByIdController
+);
 
-// Endpoint para agregar páginas leídas a un libraryItem (nuevo nombre)
-router.patch("/:itemId/add-pages", updateLibraryItemProgresoController);
+router.patch(
+  "/:itemId/add-pages",
+  validate({
+    params: Joi.object({ itemId: Joi.string().hex().length(24).required() }),
+  }),
+  updateLibraryItemProgresoController
+);
 
-// Endpoint para actualizar el estado de un libraryItem específico
-router.patch("/:itemId/estado", updateLibraryItemEstadoController);
+router.patch(
+  "/:itemId/estado",
+  validate({
+    params: objectIdParam("itemId"),
+    body: Joi.object({
+      estado: Joi.string().valid("NONE", "LEYENDO", "TERMINADO").required(),
+    }),
+  }),
+  updateLibraryItemEstadoController
+);
 export default router;

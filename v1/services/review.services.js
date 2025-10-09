@@ -38,14 +38,21 @@ export const updateReviewService = async (reviewId, userId, updateData) => {
   const { score, comment } = updateData;
 
   if (score === undefined && comment === undefined) {
-    throw { status: 400, message: "Debes proporcionar al menos un campo para actualizar (score o comment)" };
+    throw {
+      status: 400,
+      message:
+        "Debes proporcionar al menos un campo para actualizar (score o comment)",
+    };
   }
 
   const noScoreChange = score === review.score || score === undefined;
   const noCommentChange = comment === review.comment || comment === undefined;
 
   if (noScoreChange && noCommentChange) {
-    throw { status: 400, message: "No hay cambios respecto a la información actual" };
+    throw {
+      status: 400,
+      message: "No hay cambios respecto a la información actual",
+    };
   }
 
   if (score !== undefined) review.score = score;
@@ -54,7 +61,6 @@ export const updateReviewService = async (reviewId, userId, updateData) => {
   await review.save();
   return review;
 };
-
 
 export const deleteReviewService = async (reviewId, userId) => {
   const review = await Review.findOneAndDelete({ _id: reviewId, userId });

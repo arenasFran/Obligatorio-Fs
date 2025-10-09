@@ -6,20 +6,31 @@ import {
   updateQuoteController,
 } from "../controllers/quote.controller.js";
 import { validate } from "../middlewares/validate.js";
+import { objectIdParam } from "../validators/common.js";
 import { quoteEditSchema, quoteSchema } from "../validators/quote.validator.js";
 
 const router = express.Router({ mergeParams: true });
 
 // Listar citas de un libro
-router.get("/library-item/:libraryItemId", getQuotesByLibraryItemController);
+router.get(
+  "/library-item/:libraryItemId",
+  validate({ params: objectIdParam("libraryItemId") }),
+  getQuotesByLibraryItemController
+);
 
 // Agregar cita
-router.post("/", validate(quoteSchema), createQuoteController);
+router.post("/", validate({ body: quoteSchema }), createQuoteController);
 
-// Editar cita
-router.put("/:quoteId", validate(quoteEditSchema), updateQuoteController);
+router.put(
+  "/:quoteId",
+  validate({ params: objectIdParam("quoteId"), body: quoteEditSchema }),
+  updateQuoteController
+);
 
-// Eliminar cita
-router.delete("/:quoteId", deleteQuoteController);
+router.delete(
+  "/:quoteId",
+  validate({ params: objectIdParam("quoteId") }),
+  deleteQuoteController
+);
 
 export default router;
