@@ -99,9 +99,7 @@ export async function createLibraryItem(itemData, userId) {
   }
 }
 
-
 export async function getLibraryItemsByCollection(collectionId, userId) {
-
   return await LibraryItem.find({ collectionId, userId });
 }
 
@@ -120,7 +118,19 @@ export async function deleteLibraryItem(itemId, userId) {
   return deleted;
 }
 
-
 export async function getLibraryItemsByUser(userId) {
   return await LibraryItem.find({ userId });
+}
+
+export async function getLibraryItemsByUserAndCategory(userId, category) {
+  if (
+    !category ||
+    typeof category !== "string" ||
+    category.trim().length === 0
+  ) {
+    throw new ServiceError("La categoría es obligatoria", 400);
+  }
+  const escaped = category.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`^${escaped}$`, "i");
+  return await LibraryItem.find({ userId, categories: { $regex: regex } });
 }

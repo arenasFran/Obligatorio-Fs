@@ -4,6 +4,7 @@ import {
   getLibraryItemById,
   getLibraryItemsByCollection,
   getLibraryItemsByUser,
+  getLibraryItemsByUserAndCategory,
   updateLibraryItemEstado,
   updateLibraryItemProgreso,
 } from "../services/libraryItem.services.js";
@@ -92,7 +93,7 @@ export async function getLibraryItemsByCollectionController(req, res, next) {
 export async function deleteLibraryItemController(req, res, next) {
   try {
     const { itemId } = req.params;
-    const userId = req.user._id; 
+    const userId = req.user._id;
 
     const deletedItem = await deleteLibraryItem(itemId, userId);
 
@@ -108,8 +109,23 @@ export async function deleteLibraryItemController(req, res, next) {
 
 export async function getLibraryItemsByUserController(req, res, next) {
   try {
-    const userId = req.user._id; 
+    const userId = req.user._id;
     const items = await getLibraryItemsByUser(userId);
+    res.json(items);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getLibraryItemsByUserAndCategoryController(
+  req,
+  res,
+  next
+) {
+  try {
+    const userId = req.user._id;
+    const { category } = req.query;
+    const items = await getLibraryItemsByUserAndCategory(userId, category);
     res.json(items);
   } catch (error) {
     next(error);

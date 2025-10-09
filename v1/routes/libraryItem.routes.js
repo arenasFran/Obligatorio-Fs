@@ -5,6 +5,7 @@ import {
   deleteLibraryItemController,
   getLibraryItemByIdController,
   getLibraryItemsByCollectionController,
+  getLibraryItemsByUserAndCategoryController,
   getLibraryItemsByUserController,
   updateLibraryItemEstadoController,
   updateLibraryItemProgresoController,
@@ -25,6 +26,13 @@ router.get(
   getLibraryItemsByCollectionController
 );
 router.get("/user", getLibraryItemsByUserController);
+router.get(
+  "/user/by-category",
+  validate({
+    query: Joi.object({ category: Joi.string().trim().min(1).required() }),
+  }),
+  getLibraryItemsByUserAndCategoryController
+);
 router.delete(
   "/:itemId",
   validate({ params: objectIdParam("itemId") }),
