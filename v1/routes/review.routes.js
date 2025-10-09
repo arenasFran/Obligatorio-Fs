@@ -15,7 +15,7 @@ const router = Router();
 
 router.post('/', authenticate, validate(createReviewSchema), createReview);
 
-router.get('/book/:bookId', getBookReviews);
+router.get('/book/:originalBookId', getBookReviews);
 
 
 router.get('/my-reviews', authenticate, getUserReviews);
