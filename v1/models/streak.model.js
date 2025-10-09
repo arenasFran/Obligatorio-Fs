@@ -116,7 +116,5 @@ streakSchema.methods.getStatus = function () {
   };
 };
 
-streakSchema.index({ userId: 1 }, { unique: true });
-
 const Streak = mongoose.model("Streak", streakSchema);
 export default Streak;
