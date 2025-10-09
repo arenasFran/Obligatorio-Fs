@@ -21,7 +21,6 @@ async function getTodayProgressAndObjective(userId) {
   const end = new Date(start);
   end.setDate(end.getDate() + 1);
 
-  // Traer objetivo y lista embebida de puntos por fecha
   const user = await User.findById(userId).select(
     "objectivePerDay pointsPerDate"
   );
