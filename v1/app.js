@@ -16,7 +16,7 @@ app.use(express.json());
 const port = process.env.PORT || 3000;
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 10,
+  max: 100,
   message: "Demasiadas peticiones, intente más tarde.",
   handler: (req, res, next, options) => {
     res.status(options.statusCode).json({
