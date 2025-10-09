@@ -5,7 +5,7 @@ import {
   updateReviewService,
   deleteReviewService
 } from '../services/review.services.js';
-
+import LibraryItem from "../models/libraryItem.model.js";
 
 export const createReview = async (req,res) =>{
     try{
@@ -17,18 +17,36 @@ export const createReview = async (req,res) =>{
     }
 }
 
-export const getBookReviews = async (req,res)=>{
-    try{
-        const {originalBookId} =req.params;
-        const reviews = await getBookReviewsService(originalBookId);
-        res.status(200).json({reviews, count: reviews.length});
+
+
+
+export const getBookReviews = async (req, res) => {
+  try {
+    const { originalBookId } = req.params;
+
+    if (!originalBookId) {
+      return res.status(400).json({ error: "Falta el ID del libro" });
     }
-    catch(error)
-    {
-        const status = error.status || 500;
-        res.status(status).json({error: error.message});
+
+    const bookExists = await LibraryItem.findOne({ originalBookId });
+    if (!bookExists) {
+      return res.status(404).json({ error: "El libro no existe en la biblioteca" });
     }
-}
+
+    const reviews = await getBookReviewsService(originalBookId);
+
+    if (reviews.length === 0) {
+      return res.status(404).json({ error: "Este libro no tiene reseñas aún" });
+    }
+
+    res.status(200).json({ reviews, count: reviews.length });
+  } catch (error) {
+    const status = error.status || 500;
+    res.status(status).json({ error: error.message });
+  }
+};
+
+
 
 
 export const getUserReviews = async (req,res) =>{

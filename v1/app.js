@@ -34,10 +34,9 @@ app.get("/", (req, res) => {
 });
 app.use("/v1", v1Routes);
 
-//middleware de ruta no encontrada
+
 app.use(notFoundMiddleware);
 
-//middleware de manejo de errores
 app.use(errorMiddleware);
 
 export default app;
