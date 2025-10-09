@@ -1,7 +1,31 @@
 import Review from "../models/review.model.js";
+import User from "../models/user.model.js";
 
 export const createReviewService = async (userId, reviewData) => {
   const { originalBookId, score, comment, bookTitle } = reviewData;
+
+  const user = await User.findById(userId).populate("plan", "name maxReviews");
+  if (!user) {
+    throw { status: 404, message: "Usuario no encontrado" };
+  }
+
+  if (!user.plan) {
+    throw {
+      status: 403,
+      message: "Debes contar con un plan activo para crear reseñas",
+    };
+  }
+
+  const { maxReviews } = user.plan;
+  if (typeof maxReviews === "number" && maxReviews !== -1) {
+    const currentCount = await Review.countDocuments({ userId });
+    if (currentCount >= maxReviews) {
+      throw {
+        status: 403,
+        message: "Has alcanzado el límite de reseñas para tu plan",
+      };
+    }
+  }
 
   const existingReview = await Review.findOne({ userId, originalBookId });
   if (existingReview) {
