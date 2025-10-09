@@ -21,6 +21,17 @@ export async function deleteCollection(collectionId, userId) {
 
 export async function createCollection(collectionData, userId) {
   try {
+    const existing = await Collection.findOne({
+      user: userId,
+      name: collectionData.name,
+    });
+    if (existing) {
+      throw new ServiceError(
+        "Ya existe una colección con ese nombre para este usuario",
+        409
+      );
+    }
+
     const collection = new Collection({
       ...collectionData,
       user: userId,
@@ -28,6 +39,7 @@ export async function createCollection(collectionData, userId) {
     await collection.save();
     return collection;
   } catch (error) {
+    if (error instanceof ServiceError) throw error;
     throw new ServiceError("No se pudo crear la colección", 400);
   }
 }
@@ -36,6 +48,19 @@ export async function createCollection(collectionData, userId) {
 
 export async function updateCollectionName(collectionId, userId, newName) {
   try {
+    // Prevent renaming to a name already used by this user in another collection
+    const nameInUse = await Collection.findOne({
+      user: userId,
+      name: newName,
+      _id: { $ne: collectionId },
+    });
+    if (nameInUse) {
+      throw new ServiceError(
+        "Ya existe una colección con ese nombre para este usuario",
+        409
+      );
+    }
+
     const collection = await Collection.findOneAndUpdate(
       { _id: collectionId, user: userId },
       { name: newName },
@@ -46,6 +71,7 @@ export async function updateCollectionName(collectionId, userId, newName) {
     }
     return collection;
   } catch (error) {
+    if (error instanceof ServiceError) throw error;
     throw new ServiceError(
       "No se pudo actualizar el nombre de la colección",
       400
