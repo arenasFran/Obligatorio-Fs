@@ -5,9 +5,7 @@ import {
   deleteCollection,
   updateCollectionName,
 } from "../services/collection.services.js";
-/**
- * Controlador para eliminar una colección específica.
- */
+
 export async function deleteCollectionController(req, res, next) {
   try {
     const userId = req.user._id;
@@ -46,9 +44,7 @@ export async function getUserCollectionsController(req, res, next) {
   }
 }
 
-/**
- * Controlador para actualizar el nombre de una colección específica.
- */
+
 export async function updateCollectionNameController(req, res, next) {
   try {
     const userId = req.user._id;

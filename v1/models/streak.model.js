@@ -83,7 +83,6 @@ streakSchema.methods.checkProgress = function (
     : null;
 
   if (days !== null && days > 1) {
-    // Missed at least one full day
     this.resetStreak();
   }
 

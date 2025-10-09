@@ -23,7 +23,7 @@ export async function myPointsSummaryController(req, res, next) {
   }
 }
 
-// Endpoint opcional para registrar puntos manualmente (útil para tests)
+
 export async function addPointsController(req, res, next) {
   try {
     const { libraryItemId, quantity, date } = req.body;

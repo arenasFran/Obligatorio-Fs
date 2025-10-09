@@ -99,14 +99,12 @@ export async function createLibraryItem(itemData, userId) {
   }
 }
 
-// Obtiene todos los library items de una colección
 
 export async function getLibraryItemsByCollection(collectionId, userId) {
-  // Constrain by user to avoid disclosing other users' items in the same collection id
+
   return await LibraryItem.find({ collectionId, userId });
 }
 
-// Elimina un libraryItem por su ID
 export async function deleteLibraryItem(itemId, userId) {
   const deleted = await LibraryItem.findOneAndDelete({ _id: itemId, userId });
   if (deleted) {
@@ -122,7 +120,6 @@ export async function deleteLibraryItem(itemId, userId) {
   return deleted;
 }
 
-// Obtiene todos los libraryItems de un usuario
 
 export async function getLibraryItemsByUser(userId) {
   return await LibraryItem.find({ userId });

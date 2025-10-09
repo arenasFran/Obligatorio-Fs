@@ -4,7 +4,6 @@ import PointsPerDate from "../models/pointsPerDate.model.js";
 import User from "../models/user.model.js";
 import { ServiceError } from "../utils/ServiceError.js";
 
-// Registra puntos y actualiza el total del usuario
 
 export async function addPoints({
   userId,
@@ -45,14 +44,14 @@ export async function addPoints({
     },
     { new: true }
   );
-  // Actualizar racha si corresponde (objetivo diario alcanzado)
+ 
   try {
     const { checkDailyProgress } = await import("./streak.services.js");
     await checkDailyProgress(userId);
   } catch (e) {
     console.error("Error actualizando racha tras agregar puntos:", e);
   }
-  // Desbloquear mascotas elegibles y reducir hambre de la mascota seleccionada
+
   try {
     const { unlockEligiblePetsForUser, reduceHungerOnReading } = await import(
       "./pet.services.js"
@@ -65,7 +64,7 @@ export async function addPoints({
   return { points, user: updated };
 }
 
-// Obtiene puntos del usuario opcionalmente en un rango de fechas
+
 
 export async function getUserPoints({ userId, from, to }) {
   const query = { user: userId };
@@ -77,7 +76,7 @@ export async function getUserPoints({ userId, from, to }) {
   return await PointsPerDate.find(query).sort({ date: -1 });
 }
 
-// Obtiene el total de puntos acumulados del usuario desde la colección PointsPerDate
+
 
 export async function getUserPointsSummary(userId) {
   const agg = await PointsPerDate.aggregate([

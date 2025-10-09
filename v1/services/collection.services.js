@@ -1,6 +1,5 @@
 import Collection from "../models/collection.model.js";
 import { ServiceError } from "../utils/ServiceError.js";
-// Elimina una colección específica por su ID y usuario.
 
 export async function deleteCollection(collectionId, userId) {
   try {
@@ -17,7 +16,6 @@ export async function deleteCollection(collectionId, userId) {
   }
 }
 
-// Crea una nueva colección para el usuario logueado.
 
 export async function createCollection(collectionData, userId) {
   try {
@@ -44,11 +42,10 @@ export async function createCollection(collectionData, userId) {
   }
 }
 
-// Actualiza el nombre de una colección específica por su ID y usuario.
 
 export async function updateCollectionName(collectionId, userId, newName) {
   try {
-    // Prevent renaming to a name already used by this user in another collection
+    
     const nameInUse = await Collection.findOne({
       user: userId,
       name: newName,

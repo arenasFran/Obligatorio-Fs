@@ -36,7 +36,7 @@ export async function unlockEligiblePetsForUser(userId) {
   return toAdd;
 }
 
-// Recalcula el hambre en base al tiempo transcurrido y el costo por hora de la mascota seleccionada
+
 export async function recalcSelectedPetHunger(userId) {
   const user = await User.findById(userId)
     .select("selectedPet selectedPetHunger selectedPetLastUpdate")
@@ -66,10 +66,8 @@ export async function recalcSelectedPetHunger(userId) {
   return { hunger, happiness: 100 - hunger, petId: pet._id };
 }
 
-// Reduce hambre al agregar páginas leídas
 export async function reduceHungerOnReading(userId, pages) {
   if (!Number.isFinite(pages) || pages <= 0) return null;
-  // Primero recalculamos para acumular el paso del tiempo
   const recalced = await recalcSelectedPetHunger(userId);
   if (!recalced) return null;
   let hunger = recalced.hunger;
@@ -86,7 +84,6 @@ export async function reduceHungerOnReading(userId, pages) {
 }
 
 export async function listPetsWithStatus(userId) {
-  // Asegurar desbloqueos actualizados antes de listar
   try {
     await unlockEligiblePetsForUser(userId);
   } catch {}
