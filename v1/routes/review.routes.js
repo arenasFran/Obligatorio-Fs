@@ -1,29 +1,49 @@
-import { Router } from 'express';
+import { Router } from "express";
+import Joi from "joi";
 import {
   createReview,
+  deleteReview,
   getBookReviews,
   getUserReviews,
   updateReview,
-  deleteReview
-} from '../controllers/review.controller.js';
-import { authenticate } from '../middlewares/auth.middleware.js';
-import { validate } from '../middlewares/validate.js';
-import { createReviewSchema, updateReviewSchema } from '../validators/review.validator.js';
+} from "../controllers/review.controller.js";
+import { authenticate } from "../middlewares/auth.middleware.js";
+import { validate } from "../middlewares/validate.js";
+import { objectIdParam } from "../validators/common.js";
+import {
+  createReviewSchema,
+  updateReviewSchema,
+} from "../validators/review.validator.js";
 
 const router = Router();
 
+router.post(
+  "/",
+  authenticate,
+  validate({ body: createReviewSchema }),
+  createReview
+);
 
-router.post('/', authenticate, validate(createReviewSchema), createReview);
+router.get(
+  "/book/:originalBookId",
+  validate({ params: Joi.object({ originalBookId: Joi.string().required() }) }),
+  getBookReviews
+);
 
-router.get('/book/:originalBookId', getBookReviews);
+router.get("/my-reviews", authenticate, getUserReviews);
 
+router.patch(
+  "/:id",
+  authenticate,
+  validate({ params: objectIdParam("id"), body: updateReviewSchema }),
+  updateReview
+);
 
-router.get('/my-reviews', authenticate, getUserReviews);
-
-
-router.patch('/:id', authenticate, validate(updateReviewSchema), updateReview);
-
-
-router.delete('/:id', authenticate, deleteReview);
+router.delete(
+  "/:id",
+  authenticate,
+  validate({ params: objectIdParam("id") }),
+  deleteReview
+);
 
 export default router;

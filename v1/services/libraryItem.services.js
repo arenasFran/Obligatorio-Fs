@@ -3,14 +3,20 @@ import { ServiceError } from "../utils/ServiceError.js";
 
 // Actualiza el estado de un libraryItem específico
 
-export async function updateLibraryItemEstado(itemId, estado) {
-  return await LibraryItem.findByIdAndUpdate(itemId, { estado }, { new: true });
+export async function updateLibraryItemEstado(itemId, userId, estado) {
+  // Enforce ownership to prevent IDOR
+  return await LibraryItem.findOneAndUpdate(
+    { _id: itemId, userId },
+    { estado },
+    { new: true }
+  );
 }
 
 //Actualiza el progreso (páginas leídas) de un libraryItem específico
 
-export async function updateLibraryItemProgreso(itemId, pages) {
-  const item = await LibraryItem.findById(itemId);
+export async function updateLibraryItemProgreso(itemId, userId, pages) {
+  // Fetch item ensuring it belongs to the authenticated user
+  const item = await LibraryItem.findOne({ _id: itemId, userId });
   if (!item) return null;
   const increment = Number(pages);
   if (!Number.isFinite(increment) || increment <= 0) {
@@ -19,8 +25,8 @@ export async function updateLibraryItemProgreso(itemId, pages) {
       400
     );
   }
-  const updated = await LibraryItem.findByIdAndUpdate(
-    itemId,
+  const updated = await LibraryItem.findOneAndUpdate(
+    { _id: itemId, userId },
     { $inc: { progreso: increment } },
     { new: true }
   );
@@ -41,17 +47,18 @@ export async function updateLibraryItemProgreso(itemId, pages) {
 
 // Obtiene los detalles de un libraryItem por su ID
 
-export async function getLibraryItemById(itemId) {
-  return await LibraryItem.findById(itemId);
+export async function getLibraryItemById(itemId, userId) {
+  // Only allow access to user's own item
+  return await LibraryItem.findOne({ _id: itemId, userId });
 }
 
 export async function createLibraryItem(itemData, userId) {
   const exists = await LibraryItem.findOne({
     userId: userId,
     originalBookId: itemData.originalBookId,
-  })
-  if(exists){
-    throw new ServiceError('No se permiten libros repetidos.', 400)
+  });
+  if (exists) {
+    throw new ServiceError("No se permiten libros repetidos.", 400);
   }
 
   try {
@@ -94,8 +101,9 @@ export async function createLibraryItem(itemData, userId) {
 
 // Obtiene todos los library items de una colección
 
-export async function getLibraryItemsByCollection(collectionId) {
-  return await LibraryItem.find({ collectionId });
+export async function getLibraryItemsByCollection(collectionId, userId) {
+  // Constrain by user to avoid disclosing other users' items in the same collection id
+  return await LibraryItem.find({ collectionId, userId });
 }
 
 // Elimina un libraryItem por su ID
